@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rental Elegance - Login</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; }
+        
+        .login-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a2a3a, #0f1a24);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            width: 350px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .login-box h1 {
+            font-size: 28px;
+            color: #1a2a3a;
+            margin-bottom: 10px;
+        }
+        
+        .login-input {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 10px 0;
+            border: 2px solid #e0e0e0;
+            border-radius: 30px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .login-input:focus {
+            outline: none;
+            border-color: #c4a962;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #c4a962, #b38f40);
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(196, 169, 98, 0.4);
+        }
+        
+        .error-message {
+            color: #dc3545;
+            font-size: 13px;
+            margin: 10px 0;
+            padding: 8px;
+            background: #ffe5e5;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .dashboard-wrapper {
+            display: none;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .dashboard-header {
+            background: linear-gradient(135deg, #1a2a3a, #0f1a24);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        
+        .success-badge {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        th {
+            background: #f5f0e8;
+        }
+    </style>
+</head>
+<body>
+    <!-- HALAMAN LOGIN -->
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <h1>✨ Rental Elegance</h1>
+            <p style="color: #c4a962; margin: 10px 0 20px;">Premium Management System</p>
+            
+            <input type="text" id="loginUsername" class="login-input" placeholder="Username" autocomplete="off">
+            <input type="password" id="loginPassword" class="login-input" placeholder="Password">
+            
+            <div id="loginError" class="error-message"></div>
+            
+            <button class="login-btn" onclick="handleLogin()">Login</button>
+            
+            <p style="margin-top: 20px; font-size: 12px; color: #666;">
+                🔑 <strong>Demo Account:</strong><br>
+                admin / admin123<br>
+                staff / staff123
+            </p>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboardWrapper" class="dashboard-wrapper">
+        <div class="dashboard-header">
+            <h2>🏠 Rental Elegance Dashboard</h2>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+        
+        <div class="card">
+            <h3>✅ Login Berhasil!</h3>
+            <p>Selamat datang, <strong id="welcomeName">User</strong>!</p>
+            <div class="success-badge">
+                ✨ Sistem siap digunakan ✨
+            </div>
+        </div>
+        
+        <div class="card">
+            <h3>📋 Informasi Akun Demo</h3>
+            <table>
+                <tr style="background: #f5f0e8;">
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Role</th>
+                </tr>
+                <tr>
+                    <td>admin</td>
+                    <td>admin123</td>
+                    <td>Administrator</td>
+                </tr>
+                <tr>
+                    <td>staff</td>
+                    <td>staff123</td>
+                    <td>Staff</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const users = [
+            { username: "admin", password: "admin123", role: "admin" },
+            { username: "staff", password: "staff123", role: "staff" }
+        ];
+        
+        let currentUser = null;
+        
+        function handleLogin() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const errorDiv = document.getElementById('loginError');
+            
+            errorDiv.style.display = 'none';
+            
+            if (!username || !password) {
+                errorDiv.innerHTML = '⚠️ Username dan password harus diisi!';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if (!user) {
+                errorDiv.innerHTML = '⚠️ Username atau password salah! Silakan coba lagi.';
+                errorDiv.style.display = 'block';
+                document.getElementById('loginPassword').value = '';
+                document.getElementById('loginPassword').focus();
+                return;
+            }
+            
+            currentUser = user;
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('dashboardWrapper').style.display = 'block';
+            document.getElementById('welcomeName').innerText = username;
+        }
+        
+        function logout() {
+            currentUser = null;
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('dashboardWrapper').style.display = 'none';
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+            document.getElementById('loginError').style.display = 'none';
+        }
+        
+        // Event Enter key
+        document.getElementById('loginPassword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') handleLogin();
+        });
+        document.getElementById('loginUsername').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') handleLogin();
+        });
+    </script>
+</body>
+</html>
